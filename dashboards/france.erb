@@ -1,0 +1,78 @@
+<% content_for(:title) { "Birchbox &mdash; Dashboard" } %>
+<% allow_joliebox %>
+<div class="gridster">
+  <ul>
+<!-- top line -->
+    <li data-row="1" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="sub_fr" data-view="Number" data-title="Live Subs" data-moreinfo=""></div>
+    </li>
+
+    <li data-row="1" data-col="3" data-sizex="1" data-sizey="1">
+      <div data-id="orders_fr_month" data-view="Number" data-title="This Month's Orders" data-moreinfo=""></div>
+    </li>
+
+<!-- sub adds (row 2) -->
+    <li data-row="2" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="" data-view="Text" data-title="Sub Adds" data-moreinfo=""></div>
+    </li>
+
+    <li data-row="2" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="sub_delta_fr_tday" data-view="Number2" data-title="Today" data-moreinfo="" data-lab1="Self: " data-lab2="Gift: "></div>
+    </li>
+
+    <li data-row="2" data-col="3" data-sizex="1" data-sizey="1">
+      <div data-id="sub_delta_fr_yday" data-view="Number2" data-title="Yesterday" data-moreinfo="" data-lab1="Self: " data-lab2="Gift: "></div>
+    </li>
+    <li data-row="2" data-col="4" data-sizex="1" data-sizey="1">
+      <div data-id="sub_delta_fr_month" data-view="Number2" data-title="This Month" data-moreinfo="" data-lab1="Self: " data-lab2="Gift: "></div>
+    </li>
+
+    <li data-row="2" data-col="5" data-sizex="1" data-sizey="1">
+      <div data-id="sub_delta_fr_lmonth" data-view="Number2" data-title="Last Month" data-moreinfo="" data-lab1="Self: " data-lab2="Gift: "></div>
+    </li>
+
+
+<!-- orders adds (row 3) -->
+
+<li data-row="3" data-col="1" data-sizex="1" data-sizey="1">
+  <div data-id="" data-view="Text" data-title="Full-sized Orders" data-moreinfo=""></div>
+</li>
+
+    <li data-row="3" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="orders_fr_today" data-view="Number" data-title="Today" data-moreinfo=""></div>
+    </li>
+
+    <li data-row="3" data-col="3" data-sizex="1" data-sizey="1">
+      <div data-id="orders_fr_yday" data-view="Number" data-title="Yesterday" data-moreinfo=""></div>
+    </li>
+
+    <li data-row="3" data-col="4" data-sizex="1" data-sizey="1">
+      <div data-id="orders_fr_month" data-view="Number" data-title="This Month" data-moreinfo=""></div>
+    </li>
+
+
+<!-- suspensions  (row 4) -->
+<li data-row="4" data-col="1" data-sizex="1" data-sizey="1">
+  <div data-id="" data-view="Text" data-title="Rebillable Suspensions" data-moreinfo=""></div>
+</li>
+
+    <li data-row="4" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="cancel_fr_today" data-view="Number" data-title="Today" data-moreinfo="" style="background-color:#B9543C"></div>
+    </li>
+
+    <li data-row="4" data-col="3" data-sizex="1" data-sizey="1">
+      <div data-id="cancel_fr_yday" data-view="Number" data-title="Yesterday" data-moreinfo="" style="background-color:#B9543C"></div>
+    </li>
+
+    <li data-row="4" data-col="4" data-sizex="1" data-sizey="1">
+      <div data-id="cancel_fr_month" data-view="Number" data-title="This Month" data-moreinfo="" style="background-color:#B9543C"></div>
+    </li>
+
+    <li data-row="4" data-col="5" data-sizex="1" data-sizey="1">
+      <div data-id="cancel_fr_lmonth" data-view="Number" data-title="Last Month" data-moreinfo="" style="background-color:#B9543C"></div>
+    </li>
+
+
+
+  </ul>
+</div>

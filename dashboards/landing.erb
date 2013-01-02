@@ -1,0 +1,28 @@
+<% content_for(:title) {"Birchbox Dashboards"} %> 
+<h1><b>Birchbox Dashboards</b><br>
+Welcome <%= session[:user_id] %>!</h1>
+<div class="gridster">
+  <ul>
+    <% if show_for_birchbox %>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+       <div data-id="us" data-view="Linklist" data-unordered="true" data-title="US" data-moreinfo="US Metrics"></div>
+    </li>
+    <% end %>
+    <% if show_for_joliebox %>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+       <div data-id="uk" data-view="Linklist" data-unordered="true" data-title="UK" data-moreinfo="UK Metrics"></div>
+    </li>
+    <% end %>
+    <% if show_for_joliebox %>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+       <div data-id="fr" data-view="Linklist" data-unordered="true" data-title="France" data-moreinfo="French Metrics"></div>
+    </li>
+    <% end %>
+    <% if show_for_joliebox %>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+       <div data-id="sp" data-view="Linklist" data-unordered="true" data-title="Spain" data-moreinfo="Spanish Metrics"></div>
+    </li>
+    <% end %>
+  </ul>
+</div>
+</body>
