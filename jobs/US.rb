@@ -133,14 +133,14 @@ end
 def get_us_cancellation_cumulative(period, vertical_id)
 
   case period
-  when 1 #this month
-    filter = "YEAR(date_sub(x.created_at, INTERVAL 5 HOUR))=YEAR(now()) AND MONTH(date_sub(x.created_at, INTERVAL 5 HOUR)) = MONTH(now())" 
-  when 2 #last month
-    filter = "YEAR(date_sub(x.created_at, INTERVAL 5 HOUR))=YEAR(date_sub(now(), INTERVAL 1 MONTH)) AND MONTH(date_sub(x.created_at, INTERVAL 5 HOUR)) = MONTH(date_sub(now(), INTERVAL 1 MONTH))" 
-  when 3 #yesterday
-    filter = "date(date_sub(x.created_at, INTERVAL 5 HOUR)) = date(date_sub(now(), INTERVAL 1 DAY))"
-  when 4 #today
-    filter = "date(date_sub(x.created_at, INTERVAL 5 HOUR))= date(now())"
+    when 1 #this month
+      filter = "YEAR(date_sub(x.created_at, INTERVAL 5 HOUR))=YEAR(now()) AND MONTH(date_sub(x.created_at, INTERVAL 5 HOUR)) = MONTH(now())" 
+    when 2 #last month
+      filter = "YEAR(date_sub(x.created_at, INTERVAL 5 HOUR))=YEAR(date_sub(now(), INTERVAL 1 MONTH)) AND MONTH(date_sub(x.created_at, INTERVAL 5 HOUR)) = MONTH(date_sub(now(), INTERVAL 1 MONTH))" 
+    when 3 #yesterday
+      filter = "date(date_sub(x.created_at, INTERVAL 5 HOUR)) = date(date_sub(now(), INTERVAL 1 DAY))"
+    when 4 #today
+      filter = "date(date_sub(x.created_at, INTERVAL 5 HOUR))= date(now())"
   end
 
   filter +=  " AND subscription_vertical_id = " + vertical_id.to_s
@@ -167,6 +167,36 @@ def get_us_cancellation_cumulative(period, vertical_id)
 end
 
 
+def get_us_list_joins_cumulative(period, vertical_id)
+
+  case period
+  when 1 #this month
+    filter = "YEAR(date_sub(x.created_at, INTERVAL 5 HOUR))=YEAR(now()) AND MONTH(date_sub(x.created_at, INTERVAL 5 HOUR)) = MONTH(now())" 
+  when 2 #last month
+    filter = "YEAR(date_sub(x.created_at, INTERVAL 5 HOUR))=YEAR(date_sub(now(), INTERVAL 1 MONTH)) AND MONTH(date_sub(x.created_at, INTERVAL 5 HOUR)) = MONTH(date_sub(now(), INTERVAL 1 MONTH))" 
+  when 3 #yesterday
+    filter = "date(date_sub(x.created_at, INTERVAL 5 HOUR)) = date(date_sub(now(), INTERVAL 1 DAY))"
+  when 4 #today
+    filter = "date(date_sub(x.created_at, INTERVAL 5 HOUR))= date(now())"
+  end
+
+  strQuery = "SELECT count(DISTINCT email) AS num_list_joins
+  FROM invitations as x
+  JOIN waitlists as y
+  ON x.waitlist_id = y.id
+  WHERE x.waitlist_id in (11,16)
+  AND " + filter + "
+  AND y.subscription_vertical_id = " + vertical_id.to_s + ";"
+
+  nlistjoins = 0
+  data = DB.fetch(strQuery).first
+
+  unless data.nil?
+    nlistjoins = data[:num_list_joins]
+  end
+
+  return nlistjoins
+end
 
 #US WOMENS
 
@@ -176,6 +206,7 @@ def update_monthly_us_w
   send_event('sub_delta_us_w_lmonth', {num1: delta_yday[:nself], num2: delta_yday[:ngift] })
   send_event('cancel_us_w_lmonth', { current: get_us_cancellation_cumulative(2,"1") })
   send_event('orders_us_w_lmonth', { current: get_us_orders_cumulative(2,"1") })
+  send_event('list_joins_us_w_lmonth', { current: get_us_list_joins_cumulative(2,1) })
 end
 
 
@@ -185,6 +216,7 @@ def update_daily_us_w
   send_event('sub_delta_us_w_yday', {num1: delta_yday[:nself], num2: delta_yday[:ngift] })
   send_event('orders_us_w_yday', { current: get_us_orders_cumulative(3,"1") })
   send_event('cancel_us_w_yday', { current: get_us_cancellation_cumulative(3,1) })
+  send_event('list_joins_us_w_yday', { current: get_us_list_joins_cumulative(3,1) })
 end
 
 def update_tick_us_w
@@ -205,6 +237,10 @@ def update_tick_us_w
   #cancellations
   send_event('cancel_us_w_today', { current: get_us_cancellation_cumulative(4,1) })
   send_event('cancel_us_w_month', { current: get_us_cancellation_cumulative(1,1) })
+
+  #list joins
+  send_event('list_joins_us_w_today', { current: get_us_list_joins_cumulative(4,1) })
+  send_event('list_joins_us_w_month', { current: get_us_list_joins_cumulative(1,1) })
 end
 
 
@@ -223,15 +259,17 @@ def update_monthly_us_m
   send_event('sub_delta_us_m_lmonth', {num1: delta_yday[:nself], num2: delta_yday[:ngift] })
   send_event('cancel_us_m_lmonth', { current: get_us_cancellation_cumulative(2,2) })
   send_event('orders_us_m_lmonth', { current: get_us_orders_cumulative(2,"4") })
+  send_event('list_joins_us_m_lmonth', { current: get_us_list_joins_cumulative(2,2) })
 end
 
 
 def update_daily_us_m
-  #us womens
+  #us mens
   delta_yday = get_us_sub_delta_cumulative(3,1)
   send_event('sub_delta_us_m_yday', {num1: delta_yday[:nself], num2: delta_yday[:ngift] })
   send_event('orders_us_m_yday', { current: get_us_orders_cumulative(3,"4") })
   send_event('cancel_us_m_yday', { current: get_us_cancellation_cumulative(3,2) })
+  send_event('list_joins_us_m_yday', { current: get_us_list_joins_cumulative(3,2) })
 end
 
 def update_tick_us_m
@@ -252,6 +290,10 @@ def update_tick_us_m
   #cancellations
   send_event('cancel_us_m_today', { current: get_us_cancellation_cumulative(4,2) })
   send_event('cancel_us_m_month', { current: get_us_cancellation_cumulative(1,2) })
+
+  #list joins
+  send_event('list_joins_us_m_today', {current: get_us_list_joins_cumulative(4,2) })
+  send_event('list_joins_us_m_month', {current: get_us_list_joins_cumulative(1,2) })
 end
 
 
@@ -272,12 +314,12 @@ end
 
 
 def update_monthly_us_mixed
-  send_event('orders_us_m_lmonth', { current: get_us_orders_cumulative(2,"1,4") })
+  send_event('orders_us_mixed_lmonth', { current: get_us_orders_cumulative(2,"1,4") })
 end
 
 
 def update_daily_us_mixed
-  send_event('orders_us_m_yday', { current: get_us_orders_cumulative(3,"1,4") })
+  send_event('orders_us_mixed_yday', { current: get_us_orders_cumulative(3,"1,4") })
 end
 
 def update_all_us_mixed
