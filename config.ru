@@ -78,6 +78,8 @@ DB = Sequel.connect(:adapter => 'mysql2', :user => 'benjamin', :host => '127.0.0
   use OmniAuth::Builder do
     provider :google_apps, :store => OpenID::Store::Filesystem.new('./tmp'), :name => 'birchbox', :domain => 'birchbox.com'
     provider :google_apps, :store => OpenID::Store::Filesystem.new('./tmp'), :name => 'joliebox', :domain => 'joliebox.com'
+    provider :google_apps, :store => OpenID::Store::Filesystem.new('./tmp'), :name => 'joliebox-es', :domain => 'joliebox.es'
+    provider :google_apps, :store => OpenID::Store::Filesystem.new('./tmp'), :name => 'joliebox-uk', :domain => 'joliebox.co.uk'
   end
   
   post '/auth/birchbox/callback' do
@@ -91,6 +93,26 @@ DB = Sequel.connect(:adapter => 'mysql2', :user => 'benjamin', :host => '127.0.0
   end
 
   post '/auth/joliebox/callback' do
+    if auth = request.env['omniauth.auth']
+      session[:user_id] = auth['info']['email']
+      session[:domain] = 'joliebox'
+      redirect '/'
+    else
+      redirect '/auth/failure'
+    end
+  end
+
+  post '/auth/joliebox-es/callback' do
+    if auth = request.env['omniauth.auth']
+      session[:user_id] = auth['info']['email']
+      session[:domain] = 'joliebox'
+      redirect '/'
+    else
+      redirect '/auth/failure'
+    end
+  end
+
+  post '/auth/joliebox-uk/callback' do
     if auth = request.env['omniauth.auth']
       session[:user_id] = auth['info']['email']
       session[:domain] = 'joliebox'
