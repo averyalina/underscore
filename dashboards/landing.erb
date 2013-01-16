@@ -1,6 +1,7 @@
 <% content_for(:title) {"Birchbox Dashboards"} %> 
 <h1><b>Birchbox Dashboards</b><br>
 Welcome <%= session[:user_id] %>!</h1>
+<center>
 <div class="gridster">
   <ul>
     <% if show_for_birchbox %>
@@ -25,4 +26,5 @@ Welcome <%= session[:user_id] %>!</h1>
     <% end %>
   </ul>
 </div>
+</center>
 </body>
